@@ -1,19 +1,16 @@
-const happinessMessages = [
-    "Spend time with loved ones",
-    "Exercise regularly",
-    "Get enough sleep",
-    "Eat healthy",
-    "Practice mindfulness",
-    "Help others",
-    "Learn something new",
-    "Spend time in nature",
-    "Express gratitude",
-    "Set goals and work towards them"
-];
+let happinessData = [];
+
+fetch('happiness-data.json')
+    .then(response => response.json())
+    .then(data => {
+        happinessData = data;
+        displayIcons();
+    })
+    .catch(error => console.error('Error fetching happiness data:', error));
 
 function displayIcons() {
     const emojiContainer = document.getElementById('emoji-container');
-    const icons = ['😊', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😇', '🙂'];
+    const icons = [happyIcon, healthIcon, smileIcon, homeIcon, loveIcon, etcIcon1, etcIcon2, etcIcon3, etcIcon4, etcIcon5];
 
     icons.forEach((icon, index) => {
         const iconElement = document.createElement('div');
@@ -25,7 +22,7 @@ function displayIcons() {
 }
 
 function handleIconClick(index) {
-    const message = happinessMessages[index];
+    const message = happinessData[index].message;
     displayMessage(message);
 }
 
@@ -42,4 +39,8 @@ function animateMessage(element) {
     element.style.animation = 'floatUp 2s ease-in-out';
 }
 
-document.addEventListener('DOMContentLoaded', displayIcons);
+document.addEventListener('DOMContentLoaded', () => {
+    if (happinessData.length > 0) {
+        displayIcons();
+    }
+});
